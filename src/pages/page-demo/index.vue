@@ -16,7 +16,7 @@
 
 <script>
 import axios from 'axios'
-const baseUrl = 'http://localhost:8093/lpCms/wiki'
+const baseUrl = 'https://www.linchongpets.com/lpCmsTest/wiki'
 export default {
   name: 'page-demo',
   data () {
@@ -57,10 +57,12 @@ export default {
   },
   mounted () {
     console.log(this.$route.params.articleId)
-    axios.get(baseUrl + '/article?catalogId=' + this.$route.params.articleId)
+    console.log(this.$route.params.type)
+    axios.get(baseUrl + '/article?catalogListId=' + this.$route.params.articleId + '&type=' + this.$route.params.type + '&catalogId=' + this.$route.params.catalogId)
       .then(response => {
         this.content = response.data.data.content
         this.title = response.data.data.title
+        this.articleId = response.data.data.id
       }, err => {
         console.log(err)
       }).catch((error) => {
@@ -82,9 +84,9 @@ export default {
     }, // 内容改变事件
     saveHtml: function () {
       console.log(this.content)
-      let params = { 'id': this.$route.params.articleId, 'content': this.content }
+      let params = { 'id': this.articleId, 'content': this.content }
       axios({
-        url: 'http://localhost:8093/lpCms/wiki/article',
+        url: baseUrl + '/article',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         data: JSON.stringify(params)
@@ -112,6 +114,8 @@ export default {
       if (!isLt1M) {
         this.$message.error('上传文件大小不能超过 1MB!')
       }
+      // loading动画消失
+      this.quillUpdateImg = false
       return isIMAGE && isLt1M
     },
 

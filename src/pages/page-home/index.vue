@@ -47,7 +47,7 @@
 
 <script>
 import axios from 'axios'
-const baseUrl = 'http://localhost:8093/lpCms/wiki'
+const baseUrl = 'https://www.linchongpets.com/lpCmsTest/wiki'
 export default {
   name: 'page-home',
   data () {
@@ -96,7 +96,8 @@ export default {
     },
     handleEdit (index, row) {
       console.log(index, row)
-      this.$router.push({ name: 'page-demo', params: { articleId: row.id } })
+      console.log(this.formInline.type)
+      this.$router.push({ name: 'page-demo', params: { articleId: row.catalogListId, type: this.formInline.type, catalogId: row.catalogId } })
     },
     handleDelete (index, row) {
       this.$message.warning('啥？我好不容易爬出来的数据，不许删！')
